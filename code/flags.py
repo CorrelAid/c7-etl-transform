@@ -3,6 +3,7 @@ from typing import List
 
 import numpy as np
 import pandas as pd
+import yaml
 
 
 def flag_cases_without_consent(survey_data_frame: pd.DataFrame, question_id: str):
@@ -48,18 +49,11 @@ def flag_cases_with_fake_observations(
     Create new flag_fake column
 
     :param survey_data_frame: survey dataframe
-    :param input_file_path: with csv with manually coded fake/repeated observations, each row in the format <column name>,<value>
+    :param input_file_path: with yaml with manually coded fake/repeated observations
     :return: dataframe with added flag_fake column
     """
-    # create a dictionary for the apply
-    flagged_respondents = pd.read_csv(
-        input_file_path, names=["field", "val"], index_col=False
-    )
-    flagged_field_dictionary = {
-        field: [] for field in flagged_respondents["field"].unique()
-    }
-    for _, row in flagged_respondents.iterrows():
-        flagged_field_dictionary[row["field"]].append(row["val"])
+    with open(input_file_path, "rb") as f:
+        flagged_field_dictionary = yaml.safeload(f)
 
     survey_data_frame["flag_fake"] = survey_data_frame.apply(
         lambda row: any(
@@ -73,14 +67,23 @@ def flag_cases_with_fake_observations(
     return survey_data_frame
 
 
-def flag_speeders(survey_data_frame: pd.DataFrame):
+def flag_speeders(survey_data_frame: pd.DataFrame, input_file_path: Path):
     """
     Flag participants who went through the survey faster than should be possible
 
-    :param survey_data_frame:
+    :param survey_data_frame: survey dataframe
+    :param input_file_path: yaml of expected timings for questions/groups that matter
     :return:
     """
-    raise NotImplementedError
+    with open(input_file_path, "rb") as f:
+        timing_dictionary = yaml.safeload(f)
+
+    for timing_field, expected_time in timing_dictionary.items():
+        survey_data_frame[f"flag_{timing_field}"] = survey_data_frame[
+            timing_field
+        ].apply(lambda time: time < expected_time)
+
+    return survey_data_frame
 
 
 def flag_critical_question_below_threshold(
