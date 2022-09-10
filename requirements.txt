@@ -3,3 +3,4 @@ SQLAlchemy
 sshtunnel
 pymysql
 pandas
+pytest
