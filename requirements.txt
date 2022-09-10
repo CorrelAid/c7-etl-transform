@@ -4,3 +4,4 @@ sshtunnel
 pymysql
 pandas
 pytest
+pre-commit
