@@ -60,10 +60,13 @@ def flag_critical_question_below_threshold(survey_data_frame: pd.DataFrame, ques
     """
     raise NotImplementedError
 
-def flag_nonsensical_free_text(survey_data_frame :  pd.DataFrame):
+def flag_nonsensical_free_text(survey_data_frame :  pd.DataFrame, free_text_fields : List[str]):
     """
-
+    This could be useful to detect suspicious respondents.
+    But maybe it should be done further down the pipeline/manually.
+    For American English: https://github.com/casics/nostril
     :param survey_data_frame:
+    :param free_text_fields:
     :return:
     """
     raise NotImplementedError
