@@ -1,0 +1,9 @@
+q18,q21,q22,behindert_oder_eingeschraenkt,schwerbehinderung
+Ja,Ja,100,True,True
+Nein,Ja,80,True,True
+Ja,Nein,0,True,False
+Nein,Nein,0,False,False
+Ja,Nein,70,True,False
+Ja,Ja,NA,True,False
+Ja,Nein,NA,True,False
+Ja,Ja,30,True,False
