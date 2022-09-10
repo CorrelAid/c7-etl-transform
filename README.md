@@ -50,6 +50,9 @@ Now run load.py to get access to the MariaDB.
 # Developer information
 Just kept here for continuing after the hackathon :)
 
+## Documentation
+Documentation of the data transformations and functionality can be found in the project [Wiki](https://github.com/CorrelAid/c7-etl-transform/wiki/Contents).
+
 ## Definition of Done
 
 Default Definition of Done can be found
