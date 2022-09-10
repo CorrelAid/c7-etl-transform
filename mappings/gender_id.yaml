@@ -1,0 +1,119 @@
+LEVEL:
+  female: 
+    COL: 
+      - q7_SQ001
+    VAL: 
+      - Ja
+  male: 
+    COL: 
+      - q7_SQ002
+    VAL: 
+     - Ja
+  divers: 
+    COL: 
+      - q7_SQ003
+    VAL:
+      - Ja  
+  trans: 
+    COL: 
+      - q7_SQ004
+    VAL:
+      - Ja
+  inter: 
+    COL: 
+      - q7_SQ005
+    VAL:
+      - Ja
+  non_specified: 
+    COL: 
+      - q23_SQ001
+    VAL:
+      - Ja
+  asexual:
+    COL: 
+      - q23_SQ002
+    VAL:
+      - Ja
+  bisexual:
+    COL: 
+      - q23_SQ003
+    VAL:
+      - Ja 
+  heterosexual: 
+    COL: 
+      - q23_SQ004
+    VAL:
+      - Ja  
+  homosexual:
+    COL: 
+      - q23_SQ005
+    VAL:
+      - Ja
+  lesbian:
+    COL: 
+      - q23_SQ006
+    VAL:
+      - Ja
+  pansexual:
+    COL: 
+      - q23_SQ007
+    VAL:
+      - Ja   
+  queer:
+    COL: 
+      - q23_SQ008
+    VAL:
+      - Ja
+  gay: 
+    COL: 
+      - q23_SQ009
+    VAL:
+      - Ja
+  other: 
+    COL: 
+      - q23_SQ010
+    VAL:
+      - Ja
+  LEVEL:
+    tin: 
+      COL:
+      - divers
+      - trans
+      - inter
+    lsba:
+      COL:
+        - asexual
+        - bisexual
+        - heterosexual
+        - homosexual
+        - lesbian
+        - pansexual
+        - queer
+        - gay  
+    LEVEL:    
+      cis: 
+        COL:
+          - tin
+        VAL: 
+          - false 
+      fint:
+        COL:
+        - female
+        - tin
+        RELATION: AND
+      lsbtiq:
+        COL:
+          - tin
+          - lsba  
+        RELATION: AND  
+      LEVEL:  
+        cis_male: 
+          COL:
+            - cis
+            - male
+          RELATION: AND  
+        cis_female:
+          COL:
+            - cis
+            - female
+          RELATION: AND  
