@@ -1,14 +1,15 @@
-from code.flags import (
-    flag_cases_with_fake_observations,
-    flag_cases_without_consent,
-    flag_repeated_users,
-    flag_speeders,
-)
 from pathlib import Path
 
 import pandas as pd
 import pytest
 import yaml
+
+from transform_code.flags import (
+    flag_cases_with_fake_observations,
+    flag_cases_without_consent,
+    flag_repeated_users,
+    flag_speeders,
+)
 
 
 @pytest.fixture(
@@ -34,7 +35,7 @@ import yaml
     ]
 )
 def flag_test_cases(request):
-    dataframe = pd.read_csv(request.param[0])
+    dataframe = pd.read_csv(request.param[0], sep=";")
     yield dataframe, request.param[1], request.param[1]
 
 

@@ -1,12 +1,13 @@
 """Test most complex diversity variable calculation"""
-from code.diversity_variables import (
-    dv_get_beeintraechtigung_oder_behinderung,
-    dv_get_schwerbehinderung,
-)
 from pathlib import Path
 
 import pandas as pd
 import pytest
+
+from transform_code.diversity_variables import (
+    dv_get_beeintraechtigung_oder_behinderung,
+    dv_get_schwerbehinderung,
+)
 
 
 @pytest.fixture(

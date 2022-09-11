@@ -1,13 +1,17 @@
-import pandas as pd
-import yaml
 from pathlib import Path
 from typing import List, Union
 
-def dv_set_leaf(survey_data_frame: pd.DataFrame,
-                    cols: List[str],
-                    values: List[Union[str,bool]],
-                    operator: str,
-                    target: str):
+import pandas as pd
+import yaml
+
+
+def dv_set_leaf(
+    survey_data_frame: pd.DataFrame,
+    cols: List[str],
+    values: List[Union[str, bool]],
+    operator: str,
+    target: str,
+):
     """
     Append column to dataframe based on specified logic
 
@@ -17,10 +21,18 @@ def dv_set_leaf(survey_data_frame: pd.DataFrame,
     :param: operator: if all values on cols have to equal or any
     :param: target: column name of newly created column in survey_data_frame
     """
-    if operator=="AND":
-        is_true = survey_data_frame.loc[:,cols].apply(lambda x: x == values, axis=1).all(axis=1)
+    if operator == "AND":
+        is_true = (
+            survey_data_frame.loc[:, cols]
+            .apply(lambda x: x == values, axis=1)
+            .all(axis=1)
+        )
     else:
-        is_true = survey_data_frame.loc[:,cols].apply(lambda x: x == values, axis=1).any(axis=1)
+        is_true = (
+            survey_data_frame.loc[:, cols]
+            .apply(lambda x: x == values, axis=1)
+            .any(axis=1)
+        )
     survey_data_frame[target] = is_true
 
 
@@ -33,21 +45,22 @@ def dv_set(survey_data_frame: pd.DataFrame, conf_path: Path) -> pd.DataFrame:
     :return:
     """
     if not conf_path.exists():
-        raise 
-    with conf_path.open('r') as f:
+        raise
+    with conf_path.open("r") as f:
         conf = yaml.safe_load(f)
 
     while "LEVEL" in conf.keys():
         for key, item in conf.items():
-            if key=="LEVEL":
+            if key == "LEVEL":
                 continue
             cols = item["COL"]
             values = [True] * len(cols) if "VAL" not in item.keys() else item["VAL"]
             operator = "OR" if "RELATION" not in item.keys() else item["RELATION"]
-            dv_set_leaf(survey_data_frame,cols,values,operator,key)
-        conf = conf["LEVEL"]    
+            dv_set_leaf(survey_data_frame, cols, values, operator, key)
+        conf = conf["LEVEL"]
 
-    return survey_data_frame    
+    return survey_data_frame
+
 
 def dv_get_amtliche_behinderung(survey_data_frame):
 
@@ -61,7 +74,9 @@ def dv_get_beeintraechtigung(survey_data_frame):
 
 def dv_get_schwerbehinderung(survey_data_frame):
 
-    schwerbehinderung = ~pd.isna(survey_data_frame["q22"]) & (survey_data_frame["q22"] >= 50)
+    schwerbehinderung = ~pd.isna(survey_data_frame["q22"]) & (
+        survey_data_frame["q22"] >= 50
+    )
 
     # people with Schwerbehinderung have to have ticked Behinderung
     return schwerbehinderung & dv_get_amtliche_behinderung(survey_data_frame)
@@ -69,18 +84,21 @@ def dv_get_schwerbehinderung(survey_data_frame):
 
 def dv_get_beeintraechtigung_oder_behinderung(survey_data_frame):
 
-    return dv_get_beeintraechtigung(survey_data_frame) | dv_get_amtliche_behinderung(survey_data_frame)
+    return dv_get_beeintraechtigung(survey_data_frame) | dv_get_amtliche_behinderung(
+        survey_data_frame
+    )
 
 
 def dv_set_beeintraechtigung_oder_behinderung(survey_data_frame):
 
-    if 'dv_beeintraechtigung_oder_behinderung' in df.columns:
+    if "dv_beeintraechtigung_oder_behinderung" in survey_data_frame.columns:
 
         return False
 
     else:
 
-        survey_data_frame['dv_beeintraechtigung_oder_behinderung'] = dv_get_beeintraechtigung_oder_behinderung(survey_data_frame)
+        survey_data_frame[
+            "dv_beeintraechtigung_oder_behinderung"
+        ] = dv_get_beeintraechtigung_oder_behinderung(survey_data_frame)
 
     return True
-
