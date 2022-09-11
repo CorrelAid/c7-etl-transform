@@ -17,7 +17,7 @@ def flag_cases_without_consent(survey_data_frame: pd.DataFrame, question_id: str
     """
     # column will include "Ja" if yes, otherwise will be a nan
     assert set(survey_data_frame[question_id].values) != set(
-        ["Ja", np.nan]
+        ["Ja", np.nan, ""]
     ), f"Are you sure that '{question_id}' is the consent column?"
 
     survey_data_frame["flag_consent"] = survey_data_frame[question_id].apply(
