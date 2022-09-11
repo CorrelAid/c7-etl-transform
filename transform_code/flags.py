@@ -77,7 +77,7 @@ def flag_speeders(survey_data_frame: pd.DataFrame, input_file_path: Path):
     :return:
     """
     with open(input_file_path, "rb") as f:
-        timing_dictionary = yaml.safeload(f)
+        timing_dictionary = yaml.safe_load(f)
 
     for timing_field, expected_time in timing_dictionary.items():
         survey_data_frame[f"flag_{timing_field}"] = survey_data_frame[
