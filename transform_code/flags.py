@@ -1,4 +1,5 @@
 """Contains survey flag functions"""
+from numbers import Number
 from pathlib import Path
 from typing import List
 
@@ -56,10 +57,17 @@ def flag_cases_with_fake_observations(
     with open(input_file_path, "rb") as f:
         flagged_field_dictionary = yaml.safe_load(f)
 
+    assert np.all(
+        [
+            field in survey_data_frame.columns
+            for field in flagged_field_dictionary.keys()
+        ]
+    ), "Check YAML field names, not all are in the dataframe"
     survey_data_frame["flag_fake"] = survey_data_frame.apply(
         lambda row: any(
             [
-                row[field] in suspicious_values
+                # convert to str for comparison
+                str(row[field]) in [str(val) for val in suspicious_values]
                 for field, suspicious_values in flagged_field_dictionary.items()
             ]
         ),
@@ -81,11 +89,14 @@ def flag_speeders(survey_data_frame: pd.DataFrame, input_file_path: Path):
 
     for timing_field, expected_time in timing_dictionary.items():
         assert (
-            timing_field in timing_dictionary.keys()
-        ), f"{timing_field} not in datafrane"
+            timing_field in survey_data_frame.columns
+        ), f"{timing_field} not in dataframe"
+        assert isinstance(
+            expected_time, Number
+        ), f"minimum time must be numeric: check {timing_field} in yaml"
         survey_data_frame[f"flag_{timing_field}"] = survey_data_frame[
             timing_field
-        ].apply(lambda time: time < expected_time)
+        ].apply(lambda time: float(time) < expected_time)
 
     return survey_data_frame
 

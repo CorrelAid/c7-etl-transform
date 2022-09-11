@@ -17,26 +17,32 @@ from transform_code.flags import (
         [
             # mixed data ids users
             Path(__file__).parents[0].joinpath("test_data/flag_test1.csv"),
-            Path(__file__).parents[0].joinpath("test_data/inputs/flag_test1.yaml"),
+            Path(__file__)
+            .parents[0]
+            .joinpath("test_data/inputs/suspicious_users1.yaml"),
             Path(__file__).parents[0].joinpath("test_data/inputs/timings.yaml"),
         ],
         [
             # strings in user ids
             Path(__file__).parents[0].joinpath("test_data/flag_test2.csv"),
-            Path(__file__).parents[0].joinpath("test_data/inputs/flag_test2.yaml"),
+            Path(__file__)
+            .parents[0]
+            .joinpath("test_data/inputs/suspicious_users2.yaml"),
             Path(__file__).parents[0].joinpath("test_data/inputs/timings.yaml"),
         ],
         [
             # numbers in user ids
             Path(__file__).parents[0].joinpath("test_data/flag_test3.csv"),
-            Path(__file__).parents[0].joinpath("test_data/inputs/flag_test3.yaml"),
+            Path(__file__)
+            .parents[0]
+            .joinpath("test_data/inputs/suspicious_users3.yaml"),
             Path(__file__).parents[0].joinpath("test_data/inputs/timings.yaml"),
         ],
     ]
 )
 def flag_test_cases(request):
     dataframe = pd.read_csv(request.param[0], sep=";")
-    yield dataframe, request.param[1], request.param[1]
+    yield dataframe, request.param[1], request.param[2]
 
 
 def test_flag_cases_without_consent(flag_test_cases):
@@ -68,12 +74,12 @@ def test_flag_cases_with_fake_observations(flag_test_cases):
 
 
 def test_flag_speeders(flag_test_cases):
-    flag_dataframe, _, timing_yaml = flag_test_cases
-    with open(timing_yaml, "rb") as f:
+    flag_dataframe, _, timing_yaml_file = flag_test_cases
+    with open(timing_yaml_file, "rb") as f:
         timing_yaml = yaml.safe_load(f)
     for timing_entry in timing_yaml:
         assert all(
-            flag_speeders(flag_dataframe, timing_yaml)[f"flag_{timing_entry}"]
+            flag_speeders(flag_dataframe, timing_yaml_file)[f"flag_{timing_entry}"]
             == flag_dataframe[f"{timing_entry}_speeder"]
         )
 
