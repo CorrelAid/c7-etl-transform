@@ -1,3 +1,4 @@
+"""Connects to the Limesurvey database through an SSH tunnel (see README.md for setting env variables)"""  # noqa : E401
 import os
 from pathlib import Path
 

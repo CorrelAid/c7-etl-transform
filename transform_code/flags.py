@@ -1,3 +1,4 @@
+"""Contains survey flag functions"""
 from pathlib import Path
 from typing import List
 

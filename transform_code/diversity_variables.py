@@ -1,3 +1,4 @@
+"""Contains functions for setting diversity variables"""
 from pathlib import Path
 from typing import List, Union
 
