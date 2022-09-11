@@ -54,7 +54,7 @@ def flag_cases_with_fake_observations(
     :return: dataframe with added flag_fake column
     """
     with open(input_file_path, "rb") as f:
-        flagged_field_dictionary = yaml.safeload(f)
+        flagged_field_dictionary = yaml.safe_load(f)
 
     survey_data_frame["flag_fake"] = survey_data_frame.apply(
         lambda row: any(
@@ -80,6 +80,9 @@ def flag_speeders(survey_data_frame: pd.DataFrame, input_file_path: Path):
         timing_dictionary = yaml.safe_load(f)
 
     for timing_field, expected_time in timing_dictionary.items():
+        assert (
+            timing_field in timing_dictionary.keys()
+        ), f"{timing_field} not in datafrane"
         survey_data_frame[f"flag_{timing_field}"] = survey_data_frame[
             timing_field
         ].apply(lambda time: time < expected_time)
