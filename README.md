@@ -1,4 +1,4 @@
-Track [X] Challenge [Y]
+Track 1 (ETL) Challenge 7 (Transformations)
 ================
 
 
@@ -13,6 +13,12 @@ python3 -m venv venv
 source venv/bin/activate
 python -m pip install -r requirements.txt
 ```
+
+## Documentation
+
+We've added some documentation on the diversity variables in the Github wiki: https://github.com/CorrelAid/c7-etl-transform/wiki/Contents
+
+Please also take a look at the code, we've included docstrings throughout, as well as several test cases which could be used as examples of usage.
 
 ## Access data
 To access the data for this challenge, you first need to get secrets/passwords.
